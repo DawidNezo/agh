@@ -1,228 +1,135 @@
-﻿#include <iostream>
+﻿
 
+#include <iostream>
 using namespace std;
 
 struct Node
 {
-    int data;
+    int val;
     Node* next;
 };
 
-class List {
+class lista {
+
 public:
-    Node* head = NULL;
+    Node* Head = NULL;
 
-    void addFront(int d)
+    bool isEmpty()
     {
-        Node* h = new Node;
-        h->data = d;
-
-        h->next = head;
-        head = h;
+        return Head == NULL;
+    }
+    //8531
+    void AddFront(int _val)
+    {
+        Node* nowy = new Node;
+        nowy->val = _val;
+        nowy->next = Head;
+        Head = nowy;
     }
 
-    void addBack(int d)
+    void wyswietl()
     {
-        Node* h = new Node;
-        h->data = d;
-        h->next = NULL;
-
-        if (!head)
-        {
-            head = h;
-        }
-        
-        Node* pom = head;
-        while (pom->next)
-        {
-            pom = pom->next;
-        }
-
-        pom->next = h;
-    }
-
-    void display()
-    {
-        Node* pom = head;
-        cout << endl;
-        while (pom != NULL)
-        {
-            cout << "->" << pom->data;
-            pom = pom->next;
-        }
-        cout << endl;
-    }
-
-    Node* find(int target)
-    {
-        Node* pom = head;
-        while (pom && pom->data != target)
-        {
-            pom = pom->next;
-        }
-
-        return pom;
-    }
-
-    void addAfter(int d, int position)
-    {
-        Node* h = new Node;
-        h->data = d;
-        h->next = NULL;
-
-        if (!head)
-        {
-            head = h;
-        }
-
-        Node* pom = head;
-        int i = 0;
-        while (pom->next && i <= position)
-        {
-            pom = pom->next;
-            i++;
-        }
-
-        if (i >= position)
-        {
-            h->next = pom->next;
-            pom->next = h;
-        }
-    }
-
-    void deleteFront()
-    {
-        if (head)
-        {
-            Node* pom = head;
-            head = pom->next;
-            delete pom;
-        }
-    }
-
-    void deleteBack()
-    {
-        Node* pom = head;
-        if (pom == NULL) {
-            return;
-        }
-        if (pom->next == NULL)
-        {
-            delete pom;
-            return;
-        }
-        while (pom->next->next)
-        {
-            pom = pom->next;
-        }
-        delete pom->next;
-        pom->next = NULL;
-    }
-
-    void deleteVal(int target)
-    {
-        Node* pom = head;
-
-        if (!pom->next) {
-            if (pom->data == target) {
-                delete pom;
+        for (Node* i = Head; i != NULL; i = i->next)
+            {
+                cout << i->val;
             }
-            return;
+    }
+    //1358
+    void AddBack(int _val)
+    {
+        Node* nowy = new Node;
+        nowy->val = _val;
+        nowy->next = NULL;
+
+        if (isEmpty())
+        {
+            Head = nowy;
         }
 
-        while (pom->next && pom->next->data != target)
+        Node* temp = Head;
+        while (temp->next != NULL)
         {
-            pom = pom->next;
+            temp = temp->next;
+            
+        }
+
+        temp->next = nowy;
+
+    }
+    //85317 --> 5317
+    void DeleteFront()
+    {
+        if (!isEmpty())
+        {
+
+            Node* temp = Head;
+            Head = temp->next;
+            delete temp;
         }
         
-        if (pom->next) {
-            Node* toDelete = pom->next;
-            pom->next = pom->next->next;
-            delete toDelete;
+    }
+   // -->
+    //85317 --> 8531
+    void DeleteBack()
+    {
+        if (!isEmpty())
+        {
+            Node* temp = Head;
+
+            if (temp->next == NULL)
+            {
+                delete temp;
+                return;
+            }
+
+            while (temp->next->next != NULL) //1
+            {
+                temp = temp->next; // 7
+            }
+            delete temp->next;
+            temp->next = NULL;
+              
         }
-        return;
+    }
+
+    int Wyszukiwanie(int _val)
+    {
+        Node* temp = Head;
+
+        while (temp != NULL && temp->val != _val)
+        {
+            temp = temp->next;
+        }
+        if(temp != NULL)
+        return temp->val;
+
+        return 0;
     }
 };
 
-void cutList(List*& list_1, List*& list_2)
-{
-    Node* slow = list_1->head;
-    Node* fast = list_1->head->next;
-
-    if (slow->next == NULL) {
-        slow = NULL;
-        return;
-    }
-
-    if (fast->next->next == NULL) {
-        fast = fast->next;
-        return;
-    }
-
-    while (fast && fast->next)
-    {
-        slow = slow->next;
-        fast = fast->next->next;
-    }
-
-    Node* pom = slow;
-    list_2->head = pom->next;
-    slow->next = NULL;
-}
-
 int main()
 {
-    List* list = new List;
-    list->addFront(1);
-    list->addFront(2);
-    list->addFront(3);
-    list->addFront(4);
-    list->addBack(6);
-    list->addBack(7);
-    list->addBack(8);
-    list->addBack(9);
+    lista* pierwszy = new lista;
 
-    list->display();
-
-    Node* existingNode = list->find(4);
-    if (existingNode)
+    if (pierwszy->isEmpty())
     {
-        cout << endl << "znaleziono";
-    }
-    else {
-        cout << endl << "nie znaleziono";
+        cout << "Pusta" << endl;
     }
 
-    Node* missingNode = list->find(10);
-    if (missingNode)
-    {
-        cout << endl << "znaleziono";
-    }
-    else {
-        cout << endl << "nie znaleziono";
-    }
-
-    list->addAfter(20, 3);
-    list->addAfter(20, 20);
-
-    list->display();
-
-    list->deleteFront();
-    list->deleteBack();
-
-    list->display();
-
-    list->deleteVal(20);
-
-    list->display();
-
-    cout << "cut";
-
-    List* secondList = new List;
-    cutList(list, secondList);
-
-    list->display();
-    secondList->display();
-
+    pierwszy->AddFront(1);
+    pierwszy->AddFront(3);
+    pierwszy->AddFront(5);
+    pierwszy->AddFront(8);
+    pierwszy->AddBack(7);
+    pierwszy->wyswietl();
+    cout << endl;
+    pierwszy->DeleteFront();
+    pierwszy->wyswietl();
+    pierwszy->DeleteBack();
+    cout << endl;
+    pierwszy-> wyswietl();
+    cout << endl;
+    cout << pierwszy->Wyszukiwanie(3);
     return 0;
 }
+
