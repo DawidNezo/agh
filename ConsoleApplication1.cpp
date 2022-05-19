@@ -16,7 +16,6 @@ public:
     {
         return H == NULL;
     }
-
     void Push(int _val)
     {
         Node* temp = new Node;
@@ -60,7 +59,8 @@ class Kolejka
     Node* O = NULL;
     Node* P = NULL;
 public:
-    bool isEmpty()
+    bool 
+    ()
     {
         return P == NULL;
     }
@@ -86,13 +86,25 @@ public:
     
     int Dequeue()
     {
-        int temp = P->val;
+        if (!isEmpty())
+        {
+            int temp = P->val;
+            Node* temp2 = P;
+            P = P->next;
+            delete temp2;
+            return temp;
+        }
+        return NULL;
+    }
 
-        delete ;
-        return 
-
-
-
+    int frontvalue()
+    {
+        if (!isEmpty())
+        {
+            int temp = P->val;
+                return temp;
+        }
+        return NULL;
     }
 
     void wyswietl()
@@ -128,7 +140,9 @@ int main()
     pierwszakolejka->Enqueue(9);
     pierwszakolejka->Enqueue(7);
     pierwszakolejka->Enqueue(5);
+    cout << pierwszakolejka->Dequeue();
     pierwszakolejka->wyswietl();
+    cout << pierwszakolejka->frontvalue();
 
         return 0;
 }
